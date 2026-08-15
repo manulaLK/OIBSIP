@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manula Gunawardhana | Portfolio & Application Showcase</title>
+    
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Animation Framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: {
+                            400: '#1e293b',
+                            500: '#0f172a',
+                            600: '#0b1329',
+                            700: '#090d1a',
+                            800: '#070a13',
+                            900: '#02040a',
+                        },
+                        accent: {
+                            cyan: '#22d3ee',
+                            blue: '#3b82f6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #070a13;
+            background-image:
+                radial-gradient(circle at 12% 18%, rgba(34, 211, 238, 0.07) 0%, transparent 42%),
+                radial-gradient(circle at 88% 82%, rgba(59, 130, 246, 0.08) 0%, transparent 42%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #22d3ee, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gradient-text-light {
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .glass {
+            background: rgba(9, 13, 26, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(30, 41, 59, 0.6);
+        }
+        .card {
+            background: rgba(11, 19, 41, 0.8);
+            border: 1px solid rgba(30, 41, 59, 0.6);
+            border-radius: 1rem;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(to right, #22d3ee, #3b82f6);
+            color: #02040a;
+            font-weight: 700;
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 20px -2px rgba(34, 211, 238, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 30px -2px rgba(34, 211, 238, 0.6);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.4);
+            color: #f1f5f9;
+            font-weight: 600;
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(30, 41, 59, 0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-ghost:hover {
+            border-color: rgba(34, 211, 238, 0.6);
+            color: #22d3ee;
+            transform: translateY(-2px);
+        }
+
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .container-view { display: none; }
+        .container-view.active-view { display: block; animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(24px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .animate-pulse-glow { animation: pulse 2s infinite; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #070a13; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #1e293b, #0f172a);
+            border-radius: 10px;
+            border: 2px solid #070a13;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 4s) infinite ease-in-out;
+            opacity: var(--base-opacity, 0.3);
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--base-opacity, 0.3); transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 8px rgba(34, 211, 238, 0.6); }
+        }
+
+        #mouse-mesh {
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+                rgba(34, 211, 238, 0.09),
+                transparent 80%
+            );
+        }
+    </style>
+</head>
+<body class="text-slate-100 font-sans antialiased grid-pattern pt-[90px]">
+
+    <audio id="bg-music" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    <div class="stars-container" id="stars-field"></div>
+    <div id="mouse-mesh" class="fixed pointer-events-none inset-0 z-0 opacity-40 transition-opacity duration-500 hidden md:block"></div>
+
+    <!-- Sticky Navigation -->
+    <nav class="glass fixed top-0 left-0 w-full h-[75px] z-[1000] flex justify-between items-center px-[5%] border-b border-b-ink-400/40 animate__animated animate__slideInDown animate__fast">
+        <div class="text-xl font-black tracking-tight text-slate-100 cursor-pointer" onclick="switchTab('home')">
+            MANULA<span class="gradient-text">.DEV</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <ul class="hidden md:flex gap-8 list-none">
+                <li><a onclick="switchTab('home')" id="nav-home" class="text-sm font-medium cursor-pointer transition-colors text-accent-cyan relative after:content-[''] after:absolute after:bottom-[-26px] after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-accent-cyan after:to-accent-blue after:rounded-full">Home</a></li>
+                <li><a onclick="switchTab('portfolio')" id="nav-portfolio" class="text-sm font-medium text-slate-400 hover:text-accent-cyan cursor-pointer transition-colors relative">Portfolio</a></li>
+                <li><a onclick="switchTab('contact')" id="nav-contact" class="text-sm font-medium text-slate-400 hover:text-accent-cyan cursor-pointer transition-colors relative">Contact</a></li>
+            </ul>
+            <button id="music-toggle" onclick="toggleAudio()" class="bg-ink-500/60 border border-ink-400/60 text-slate-300 hover:text-accent-cyan px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 backdrop-blur-md">
+                <span>🔇</span> <span class="hidden sm:inline">Music Off</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 1. HOME VIEW -->
+    <div id="view-home" class="container-view active-view max-w-[1100px] mx-auto px-6 py-12">
+        <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-12 lg:gap-20 md:py-16">
+            <div class="flex-1 text-center md:text-left animate__animated animate__fadeInLeft">
+                <div class="inline-flex items-center gap-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-6">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse-glow"></div> Web Dev Intern @ Oasis Infobyte
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1]">
+                    Hello, I'm <br><span class="gradient-text">Manula Gunawardhana</span>
+                </h1>
+                <p class="text-slate-400 text-lg mb-8 max-w-[620px] mx-auto md:mx-0 leading-relaxed">
+                    An Undergraduate Cyber Security Engineering student passionate about cybersecurity, network security, web application development, and responsive digital solutions.
+                </p>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    <button class="btn-primary" onclick="switchTab('portfolio')">Explore Portfolio 🚀</button>
+                    <a href="manula_cv.pdf" target="_blank" class="btn-ghost">Download CV / Resume</a>
+                </div>
+            </div>
+            
+            <div class="flex-shrink-0 animate__animated animate__zoomIn">
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-accent-cyan to-accent-blue rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                    <img src="me.jpeg" alt="Manula Gunawardhana" class="relative w-[240px] h-[240px] md:w-[280px] md:h-[280px] rounded-full object-cover border-[3px] border-accent-cyan/30 shadow-2xl transition-all duration-500 group-hover:scale-[1.04] group-hover:rotate-2 group-hover:border-accent-cyan">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PORTFOLIO VIEW -->
+    <div id="view-portfolio" class="container-view max-w-[1100px] mx-auto px-6 py-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 gradient-text-light">Featured Projects</h2>
+        <p class="text-slate-400 mb-10 max-w-xl">A curated presentation of web engineering and security assessment assets.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Project 0: Oasis Infobyte Task 1 Landing Page -->
+            <div class="card p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-accent-cyan/40 hover:-translate-y-2 group border-accent-cyan/30">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent-cyan/10 to-transparent opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                <div class="relative z-10">
+                    <span class="text-[10px] font-bold tracking-wider text-accent-cyan bg-accent-cyan/10 border border-accent-cyan/20 px-2.5 py-1 rounded-md uppercase block w-max mb-4">Oasis Infobyte Task 1</span>
+                    <h3 class="text-xl font-bold text-slate-100 mb-3 group-hover:text-accent-cyan transition-colors">Responsive Landing Page</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        A modern, fully responsive landing page featuring a sticky navigation bar, clear typography, dynamic feature cards, and clean semantic HTML5 & CSS3 layout architecture.
+                    </p>
+                </div>
+                <div class="relative z-10 pt-4">
+                    <a href="https://github.com/manulaLK/OIBSIP/tree/main/WebDev-L1-LandingPage" target="_blank" rel="noopener noreferrer" class="btn-primary w-full text-sm py-2.5">View GitHub Repository</a>
+                </div>
+            </div>
+
+            <!-- Project 1: Global Weather Dashboard -->
+            <div class="card p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-accent-cyan/40 hover:-translate-y-2 group">
+                <div class="relative z-10">
+                    <span class="text-[10px] font-bold tracking-wider text-accent-cyan bg-accent-cyan/10 border border-accent-cyan/20 px-2.5 py-1 rounded-md uppercase block w-max mb-4">API Integration</span>
+                    <h3 class="text-xl font-bold text-slate-100 mb-3 group-hover:text-accent-cyan transition-colors">Global Weather Dashboard</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        An asynchronous meteorological system fetching production-level global tracking metrics with smooth map marker centering and vector layers.
+                    </p>
+                </div>
+                <div class="relative z-10 pt-4">
+                    <a href="https://manulalk.github.io/weather-dashboard/" target="_blank" rel="noopener noreferrer" class="btn-primary w-full text-sm py-2.5">Launch Live App</a>
+                </div>
+            </div>
+
+            <!-- Project 2: Vaultify Security Tool -->
+            <div class="card p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-accent-cyan/40 hover:-translate-y-2 group">
+                <div class="relative z-10">
+                    <span class="text-[10px] font-bold tracking-wider text-accent-cyan bg-accent-cyan/10 border border-accent-cyan/20 px-2.5 py-1 rounded-md uppercase block w-max mb-4">Cyber Security</span>
+                    <h3 class="text-xl font-bold text-slate-100 mb-3 group-hover:text-accent-cyan transition-colors">Vaultify Credentials Simulator</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        A client-side security testing matrix designed to calculate string combinations and password entropy scores. Simulates dictionary/brute-force attack risk vectors.
+                    </p>
+                </div>
+                <div class="relative z-10 pt-4">
+                    <a href="https://manulalk.github.io/Password-Checker/" target="_blank" rel="noopener noreferrer" class="btn-primary w-full text-sm py-2.5">Test Security Dashboard</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 3. CONTACT VIEW -->
+    <div id="view-contact" class="container-view max-w-[1100px] mx-auto px-6 py-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 gradient-text-light">Let's Connect</h2>
+        <p class="text-slate-400 mb-10 max-w-xl">Initiate a dialogue or evaluate upcoming engineering specifications below.</p>
+
+        <div class="flex flex-col lg:flex-row gap-8 items-stretch">
+            <div class="flex-1 flex flex-col gap-4 justify-between">
+                <div class="card p-5 border border-ink-400/40">
+                    <h4 class="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-1">Direct Email Address</h4>
+                    <p class="text-base font-semibold text-slate-200">manula2481@gmail.com</p>
+                </div>
+                
+                <div class="card p-5 border border-ink-400/40">
+                    <h4 class="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-1">Telephone Number</h4>
+                    <p class="text-base font-semibold text-slate-200">0715853234</p>
+                </div>
+
+                <a href="https://github.com/manulaLK" target="_blank" class="card p-5 border border-ink-400/40 block transition-all duration-200 hover:bg-accent-cyan/5 hover:border-accent-cyan group">
+                    <span class="float-right text-accent-cyan group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">↗</span>
+                    <h4 class="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-1">Development Registry</h4>
+                    <p class="text-base font-semibold text-slate-200 group-hover:text-accent-cyan transition-colors">GitHub Profile (@manulaLK)</p>
+                </a>
+
+                <a href="https://linkedin.com/in/manula-gunawardana-31524338b" target="_blank" class="card p-5 border border-ink-400/40 block transition-all duration-200 hover:bg-accent-cyan/5 hover:border-accent-cyan group">
+                    <span class="float-right text-accent-cyan group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">↗</span>
+                    <h4 class="text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-1">Professional Network</h4>
+                    <p class="text-base font-semibold text-slate-200 group-hover:text-accent-cyan transition-colors">LinkedIn Profile</p>
+                </a>
+            </div>
+
+            <form class="card p-8 lg:flex-[1.3] flex flex-col justify-between border border-ink-400/40" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                <div>
+                    <div class="mb-5">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Your Name</label>
+                        <input type="text" required placeholder="John Doe" class="w-full bg-ink-900/60 border border-ink-400/60 p-3.5 rounded-lg text-slate-100 outline-none transition-colors focus:border-accent-cyan">
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+                        <input type="email" required placeholder="john@example.com" class="w-full bg-ink-900/60 border border-ink-400/60 p-3.5 rounded-lg text-slate-100 outline-none transition-colors focus:border-accent-cyan">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Message Content</label>
+                        <textarea rows="4" required placeholder="Outline project details or inquiries here..." class="w-full bg-ink-900/60 border border-ink-400/60 p-3.5 rounded-lg text-slate-100 outline-none transition-colors focus:border-accent-cyan resize-none"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary w-full py-4 text-base">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI CHATBOT INTERFACE COMPONENT -->
+    <div class="fixed bottom-6 right-6 z-[2000] font-sans flex flex-col items-end">
+        <button id="chat-toggle-btn" onclick="toggleChatInterface()" class="w-14 h-14 rounded-full bg-gradient-to-r from-accent-cyan to-accent-blue text-ink-900 shadow-xl shadow-accent-cyan/20 flex items-center justify-center font-bold text-2xl border border-accent-cyan/40 transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none">
+            💬
+        </button>
+
+        <div id="chat-window" class="hidden w-[350px] sm:w-[380px] h-[500px] glass rounded-2xl flex-col shadow-2xl border border-ink-400/80 mb-4 animate__animated animate__fadeInUp animate__faster overflow-hidden">
+            <div class="bg-ink-600/90 border-b border-ink-400/60 px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse-glow"></div>
+                    <div>
+                        <h4 class="text-sm font-bold tracking-wide text-slate-100">Manu's AI Guide</h4>
+                        <span class="text-[10px] text-slate-400 font-medium tracking-tight">Cyber Security & CV Assistant</span>
+                    </div>
+                </div>
+                <button onclick="toggleChatInterface()" class="text-slate-400 hover:text-accent-cyan font-bold transition-colors text-lg px-2">×</button>
+            </div>
+
+            <div id="chat-messages-log" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3 scroll-smooth">
+                <div class="bg-ink-500/80 border border-ink-400/40 p-3 rounded-xl rounded-tl-none max-w-[85%] self-start">
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Hello! I am Manula's AI assistant. Ask me about his <b>skills</b>, <b>education</b>, <b>Oasis Infobyte projects</b>, or <b>contact</b> details!
+                    </p>
+                </div>
+            </div>
+
+            <form onsubmit="handleUserMessage(event)" class="p-3 bg-ink-600/40 border-t border-ink-400/60 flex gap-2 items-center">
+                <input id="chat-user-input" type="text" autocomplete="off" placeholder="Ask about core skills or projects..." class="flex-1 bg-ink-900/60 border border-ink-400/60 px-4 py-2.5 rounded-xl text-xs text-slate-100 outline-none focus:border-accent-cyan transition-colors">
+                <button type="submit" class="bg-gradient-to-r from-accent-cyan to-accent-blue text-ink-900 font-bold px-4 py-2.5 rounded-xl text-xs transition-transform active:scale-95">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function toggleAudio() {
+            const music = document.getElementById('bg-music');
+            const button = document.getElementById('music-toggle');
+            
+            if (music.paused) {
+                music.play().then(() => {
+                    button.innerHTML = '<span>🔊</span> <span class="hidden sm:inline">Music On</span>';
+                    button.classList.add('border-accent-cyan/80', 'text-accent-cyan');
+                }).catch(err => console.log("Playback error:", err));
+            } else {
+                music.pause();
+                button.innerHTML = '<span>🔇</span> <span class="hidden sm:inline">Music Off</span>';
+                button.classList.remove('border-accent-cyan/80', 'text-accent-cyan');
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.container-view').forEach(el => el.classList.remove('active-view'));
+            document.getElementById(`view-${tabId}`).classList.add('active-view');
+
+            document.querySelectorAll('nav ul a').forEach(el => {
+                el.classList.remove('text-accent-cyan', "after:content-['']", 'after:absolute', 'after:bottom-[-26px]', 'after:left-0', 'after:w-full', 'after:h-[2px]', 'after:bg-gradient-to-r', 'after:from-accent-cyan', 'after:to-accent-blue', 'after:rounded-full');
+                el.classList.add('text-slate-400', 'hover:text-accent-cyan');
+            });
+
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) {
+                activeNav.classList.remove('text-slate-400');
+                activeNav.classList.add('text-accent-cyan', "after:content-['']", 'after:absolute', 'after:bottom-[-26px]', 'after:left-0', 'after:w-full', 'after:h-[2px]', 'after:bg-gradient-to-r', 'after:from-accent-cyan', 'after:to-accent-blue', 'after:rounded-full');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const starsField = document.getElementById('stars-field');
+            const totalStarsCount = 75;
+
+            for (let i = 0; i < totalStarsCount; i++) {
+                const starElement = document.createElement('div');
+                starElement.classList.add('star');
+                
+                const positionTop = Math.random() * 100;
+                const positionLeft = Math.random() * 100;
+                const randomSize = Math.random() * 2.5 + 0.5;
+                const randomDuration = Math.random() * 4 + 3;
+                const randomOpacity = Math.random() * 0.4 + 0.1;
+
+                starElement.style.top = `${positionTop}%`;
+                starElement.style.left = `${positionLeft}%`;
+                starElement.style.width = `${randomSize}px`;
+                starElement.style.height = `${randomSize}px`;
+                starElement.style.setProperty('--duration', `${randomDuration}s`);
+                starElement.style.setProperty('--base-opacity', randomOpacity);
+                
+                starsField.appendChild(starElement);
+            }
+        });
+
+        document.addEventListener('mousemove', (event) => {
+            const meshElement = document.getElementById('mouse-mesh');
+            if (meshElement) {
+                meshElement.style.setProperty('--mouse-x', `${event.clientX}px`);
+                meshElement.style.setProperty('--mouse-y', `${event.clientY}px`);
+            }
+        });
+
+        function toggleChatInterface() {
+            const chatWindow = document.getElementById('chat-window');
+            const toggleButton = document.getElementById('chat-toggle-btn');
+            
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                chatWindow.classList.add('flex');
+                toggleButton.innerHTML = '✕';
+            } else {
+                chatWindow.classList.add('hidden');
+                chatWindow.classList.remove('flex');
+                toggleButton.innerHTML = '💬';
+            }
+        }
+
+        const MANULA_CV_DATA = {
+            about: "Manula Gunawardhana is an undergraduate <b>Cyber Security Engineering student</b> and Web Dev Intern at Oasis Infobyte.",
+            skills: "• <b>Security:</b> Network Security, Vulnerability Analysis, & Ethical Hacking.<br>• <b>Development:</b> HTML5, CSS3, Tailwind CSS, JavaScript.",
+            projects: "1. <b>Oasis Infobyte Landing Page</b><br>2. <b>Vaultify Security Matrix</b><br>3. <b>Weather Dashboard</b>",
+            contact: "• <b>Email:</b> manula2481@gmail.com<br>• <b>Phone:</b> 0715853234"
+        };
+
+        function handleUserMessage(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('chat-user-input');
+            const logWindow = document.getElementById('chat-messages-log');
+            const userText = inputField.value.trim().toLowerCase();
+
+            if (!userText) return;
+
+            const userBubble = document.createElement('div');
+            userBubble.className = 'bg-accent-blue/20 border border-accent-blue/30 p-3 rounded-xl rounded-tr-none max-w-[85%] self-end';
+            userBubble.innerHTML = `<p class="text-xs text-slate-200 leading-relaxed">${inputField.value.trim()}</p>`;
+            logWindow.appendChild(userBubble);
+            
+            inputField.value = '';
+            logWindow.scrollTop = logWindow.scrollHeight;
+
+            setTimeout(() => {
+                let responseText = "I can tell you about Manula's skills, projects, or contact details!";
+                if (userText.includes('skill')) responseText = MANULA_CV_DATA.skills;
+                else if (userText.includes('project')) responseText = MANULA_CV_DATA.projects;
+                else if (userText.includes('contact') || userText.includes('email') || userText.includes('phone')) responseText = MANULA_CV_DATA.contact;
+                else if (userText.includes('about')) responseText = MANULA_CV_DATA.about;
+
+                const botBubble = document.createElement('div');
+                botBubble.className = 'bg-ink-500/80 border border-ink-400/40 p-3 rounded-xl rounded-tl-none max-w-[85%] self-start';
+                botBubble.innerHTML = `<p class="text-xs text-slate-300 leading-relaxed">${responseText}</p>`;
+                logWindow.appendChild(botBubble);
+                logWindow.scrollTop = logWindow.scrollHeight;
+            }, 500);
+        }
+    </script>
+</body>
+</html>
